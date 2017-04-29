@@ -4,12 +4,12 @@ project(CGfase3)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES_1
-        tinyxml/tinystr.cpp
-        tinyxml/tinystr.h
-        tinyxml/tinyxml.cpp
-        tinyxml/tinyxml.h
-        tinyxml/tinyxmlerror.cpp
-        tinyxml/tinyxmlparser.cpp
+        lib/tinyxml/tinystr.cpp
+        lib/tinyxml/tinystr.h
+        lib/tinyxml/tinyxml.cpp
+        lib/tinyxml/tinyxml.h
+        lib/tinyxml/tinyxmlerror.cpp
+        lib/tinyxml/tinyxmlparser.cpp
         src/motor.cpp)
 
 set(SOURCE_FILES_2

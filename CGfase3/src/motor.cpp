@@ -4,7 +4,7 @@
 #include <GL/glut.h>
 #endif
 
-#include "../tinyxml/tinyxml.h"
+#include "../lib/tinyxml/tinyxml.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <vector>
