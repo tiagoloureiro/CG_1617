@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<scene>
+    
+    <group>
+        <scale X="500" Y="500" Z="500" /> <!-- sol -->
+        <translate X="-990" />
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group> 
+
+    <group>
+        <translate X="28" /> <!-- 20 + 8.36 -->
+        <rotate angle="15" axisX="0" axisY="1" axisZ="0" />
+        <scale X="1.7" Y="1.7" Z="1.7" /> <!-- mercurio -->
+
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+
+    <group>
+        <translate X="50" /> <!-- 15.5 -->
+        <rotate angle="30" axisX="0" axisY="1" axisZ="0" />
+        <scale X="4.3" Y="4.3" Z="4.3" /> <!-- venus -->
+
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+
+    <group>
+        <translate X="80" /> <!-- 21.43 -->
+        <rotate angle="45" axisX="0" axisY="1" axisZ="0" />
+        <scale X="4.5" Y="4.5" Z="4.5" /> <!-- terra -->
+
+        <models>
+            <model file="sphere.3d" />
+        </models>
+
+        <group>
+            <translate Y="12" /> <!-- 0.18/2 + 0.03 -->
+            <rotate angle="60" axisX="0" axisY="1" axisZ="0" />
+            <scale X="1.2" Y="1.2" Z="1.2" /> <!-- lua  -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+    </group>
+
+    <group>
+        <translate X="100" Y="0" Z="0"/> <!-- 32.7 -->
+        <rotate angle="75" axisX="0" axisY="1" axisZ="0" />
+        <scale X="2.4" Y="2.4" Z="2.4" /> <!-- marte -->
+
+        <models>
+            <model file="sphere.3d" />
+        </models>
+    </group>
+
+    <group>
+        <translate X="230" /> <!-- 111.78 -->
+        <rotate angle="90" axisX="0" axisY="1" axisZ="0" />
+        <scale X="50.1" Y="50.1" Z="50.1" /> <!-- jupiter -->
+
+        <models>
+            <model file="sphere.3d" />
+        </models>
+
+        <group>
+            <translate Y="130" /> <!-- 2.05/2 + 0.03 -->
+            <rotate angle="15" axisX="0" axisY="1" axisZ="0" />
+            <scale X="1.2" Y="1.2" Z="1.2" /> <!-- lua europa -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+
+        <group>
+            <translate Y="100" Z ="100"/> <!-- 2.05/2 + 0.03\ -->
+            <rotate angle="30" axisX="0" axisY="1" axisZ="0" />
+            <scale X="1.2" Y="1.2" Z="1.2" /> <!-- lua IO -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+
+        <group>
+            <translate Y="100" Z="50"/> <!-- 2.05/2 + 0.03 -->
+            <rotate angle="45" axisX="0" axisY="1" axisZ="0" />
+            <scale X="1.5" Y="1.5" Z="1.5" /> <!-- lua Ganimedes -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+
+        <group>
+            <translate Y="130" Z="100"/> <!-- 2.05/2 + 0.03 -->
+            <rotate angle="60" axisX="0" axisY="1" axisZ="0" />
+            <scale X="1.5" Y="1.5" Z="1.5" /> <!-- lua calisto -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+    </group>
+
+    <group>
+        <translate X="500" Y="0" Z="0"/> <!-- 205.02 -->
+        <rotate angle="45" axisX="0" axisY="1" axisZ="0" />
+        <scale X="42" Y="42" Z="42" /> <!-- saturno -->
+
+        <models>
+            <model file="sphere.3d" />
+        </models>
+
+        <group>
+            
+            <rotate angle="30" axisX="0" axisY="1" axisZ="1" />
+            <scale X="60" Y="1.5" Z="60" /> <!-- anel -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+
+        <group>
+            <translate Y="100" /> <!-- 1.67/2 + 0.03 -->
+            <rotate angle="120" axisX="0" axisY="1" axisZ="0" />
+            <scale X="1.5" Y="1.5" Z="1.5" /> <!-- lua tita -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+
+
+    </group>
+
+    <group>
+        <translate X="702" Y="0" Z="0"/> <!-- 411.74 -->
+        <rotate angle="135" axisX="0" axisY="1" axisZ="0" />
+        <scale X="16.8" Y="16.8" Z="16.8" /> <!-- urano -->
+        <models>                        
+            <model file="sphere.3d" />
+        </models>
+        
+    </group>
+
+    <group>
+        <translate X="800" Y="0" Z="0"/> <!-- 645.82 -->
+        <rotate angle="150" axisX="0" axisY="1" axisZ="0" />
+        <scale X="16.3" Y="16.3" Z="16.3" /> <!-- neptuno -->
+
+        <models>
+            <model file="sphere.3d" />
+        </models>
+
+        <group>
+            <translate Y="60" /> <!-- 0.65/2 + 0.03\ -->
+            <rotate angle="165" axisX="0" axisY="1" axisZ="0" />
+            <scale X="1.1" Y="1.1" Z="1.1" /> <!-- lua tritao -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+    </group>
+</scene>
+

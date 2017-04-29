@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/CGfase2.dir/gerador/main.cpp.o CMakeFiles/CGfase2.dir/motor/tinyxml/tinystr.cpp.o CMakeFiles/CGfase2.dir/motor/tinyxml/tinyxml.cpp.o CMakeFiles/CGfase2.dir/motor/tinyxml/tinyxmlerror.cpp.o CMakeFiles/CGfase2.dir/motor/tinyxml/tinyxmlparser.cpp.o CMakeFiles/CGfase2.dir/motor/main.cpp.o  -o CGfase2 

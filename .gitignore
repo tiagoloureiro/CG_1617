@@ -1,0 +1,8 @@
+.*
+!.gitignore
+*.pdf
+*.zip
+figura/*
+gerador/*
+motor/*
+makefile

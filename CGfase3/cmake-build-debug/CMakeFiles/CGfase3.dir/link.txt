@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/CGfase3.dir/src/motor.cpp.o CMakeFiles/CGfase3.dir/src/gerador.cpp.o  -o CGfase3 
