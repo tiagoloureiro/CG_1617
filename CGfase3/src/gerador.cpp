@@ -397,7 +397,7 @@ int main(int argc, char **argv) {
         /* Só para quando está em debug
         string caminho = "../../motor/";
         */
-        string caminho = "../motor/";
+        string caminho = "../formas/";
 
         if (argv[1] == string("plane")) {
             if (argc == 4) {
