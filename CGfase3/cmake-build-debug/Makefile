@@ -123,6 +123,32 @@ CGfase3/fast:
 	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/build
 .PHONY : CGfase3/fast
 
+#=============================================================================
+# Target rules for targets named gerador
+
+# Build rule for target.
+gerador: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gerador
+.PHONY : gerador
+
+# fast build rule for target.
+gerador/fast:
+	$(MAKE) -f CMakeFiles/gerador.dir/build.make CMakeFiles/gerador.dir/build
+.PHONY : gerador/fast
+
+#=============================================================================
+# Target rules for targets named motor
+
+# Build rule for target.
+motor: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 motor
+.PHONY : motor
+
+# fast build rule for target.
+motor/fast:
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/build
+.PHONY : motor/fast
+
 src/gerador.o: src/gerador.cpp.o
 
 .PHONY : src/gerador.o
@@ -130,6 +156,7 @@ src/gerador.o: src/gerador.cpp.o
 # target to build an object file
 src/gerador.cpp.o:
 	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/src/gerador.cpp.o
+	$(MAKE) -f CMakeFiles/gerador.dir/build.make CMakeFiles/gerador.dir/src/gerador.cpp.o
 .PHONY : src/gerador.cpp.o
 
 src/gerador.i: src/gerador.cpp.i
@@ -139,6 +166,7 @@ src/gerador.i: src/gerador.cpp.i
 # target to preprocess a source file
 src/gerador.cpp.i:
 	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/src/gerador.cpp.i
+	$(MAKE) -f CMakeFiles/gerador.dir/build.make CMakeFiles/gerador.dir/src/gerador.cpp.i
 .PHONY : src/gerador.cpp.i
 
 src/gerador.s: src/gerador.cpp.s
@@ -148,6 +176,7 @@ src/gerador.s: src/gerador.cpp.s
 # target to generate assembly for a file
 src/gerador.cpp.s:
 	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/src/gerador.cpp.s
+	$(MAKE) -f CMakeFiles/gerador.dir/build.make CMakeFiles/gerador.dir/src/gerador.cpp.s
 .PHONY : src/gerador.cpp.s
 
 src/motor.o: src/motor.cpp.o
@@ -157,6 +186,7 @@ src/motor.o: src/motor.cpp.o
 # target to build an object file
 src/motor.cpp.o:
 	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/src/motor.cpp.o
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/src/motor.cpp.o
 .PHONY : src/motor.cpp.o
 
 src/motor.i: src/motor.cpp.i
@@ -166,6 +196,7 @@ src/motor.i: src/motor.cpp.i
 # target to preprocess a source file
 src/motor.cpp.i:
 	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/src/motor.cpp.i
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/src/motor.cpp.i
 .PHONY : src/motor.cpp.i
 
 src/motor.s: src/motor.cpp.s
@@ -175,7 +206,128 @@ src/motor.s: src/motor.cpp.s
 # target to generate assembly for a file
 src/motor.cpp.s:
 	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/src/motor.cpp.s
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/src/motor.cpp.s
 .PHONY : src/motor.cpp.s
+
+tinyxml/tinystr.o: tinyxml/tinystr.cpp.o
+
+.PHONY : tinyxml/tinystr.o
+
+# target to build an object file
+tinyxml/tinystr.cpp.o:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinystr.cpp.o
+.PHONY : tinyxml/tinystr.cpp.o
+
+tinyxml/tinystr.i: tinyxml/tinystr.cpp.i
+
+.PHONY : tinyxml/tinystr.i
+
+# target to preprocess a source file
+tinyxml/tinystr.cpp.i:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.i
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinystr.cpp.i
+.PHONY : tinyxml/tinystr.cpp.i
+
+tinyxml/tinystr.s: tinyxml/tinystr.cpp.s
+
+.PHONY : tinyxml/tinystr.s
+
+# target to generate assembly for a file
+tinyxml/tinystr.cpp.s:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.s
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinystr.cpp.s
+.PHONY : tinyxml/tinystr.cpp.s
+
+tinyxml/tinyxml.o: tinyxml/tinyxml.cpp.o
+
+.PHONY : tinyxml/tinyxml.o
+
+# target to build an object file
+tinyxml/tinyxml.cpp.o:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinyxml.cpp.o
+.PHONY : tinyxml/tinyxml.cpp.o
+
+tinyxml/tinyxml.i: tinyxml/tinyxml.cpp.i
+
+.PHONY : tinyxml/tinyxml.i
+
+# target to preprocess a source file
+tinyxml/tinyxml.cpp.i:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.i
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinyxml.cpp.i
+.PHONY : tinyxml/tinyxml.cpp.i
+
+tinyxml/tinyxml.s: tinyxml/tinyxml.cpp.s
+
+.PHONY : tinyxml/tinyxml.s
+
+# target to generate assembly for a file
+tinyxml/tinyxml.cpp.s:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.s
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinyxml.cpp.s
+.PHONY : tinyxml/tinyxml.cpp.s
+
+tinyxml/tinyxmlerror.o: tinyxml/tinyxmlerror.cpp.o
+
+.PHONY : tinyxml/tinyxmlerror.o
+
+# target to build an object file
+tinyxml/tinyxmlerror.cpp.o:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinyxmlerror.cpp.o
+.PHONY : tinyxml/tinyxmlerror.cpp.o
+
+tinyxml/tinyxmlerror.i: tinyxml/tinyxmlerror.cpp.i
+
+.PHONY : tinyxml/tinyxmlerror.i
+
+# target to preprocess a source file
+tinyxml/tinyxmlerror.cpp.i:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.i
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinyxmlerror.cpp.i
+.PHONY : tinyxml/tinyxmlerror.cpp.i
+
+tinyxml/tinyxmlerror.s: tinyxml/tinyxmlerror.cpp.s
+
+.PHONY : tinyxml/tinyxmlerror.s
+
+# target to generate assembly for a file
+tinyxml/tinyxmlerror.cpp.s:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.s
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinyxmlerror.cpp.s
+.PHONY : tinyxml/tinyxmlerror.cpp.s
+
+tinyxml/tinyxmlparser.o: tinyxml/tinyxmlparser.cpp.o
+
+.PHONY : tinyxml/tinyxmlparser.o
+
+# target to build an object file
+tinyxml/tinyxmlparser.cpp.o:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinyxmlparser.cpp.o
+.PHONY : tinyxml/tinyxmlparser.cpp.o
+
+tinyxml/tinyxmlparser.i: tinyxml/tinyxmlparser.cpp.i
+
+.PHONY : tinyxml/tinyxmlparser.i
+
+# target to preprocess a source file
+tinyxml/tinyxmlparser.cpp.i:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.i
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinyxmlparser.cpp.i
+.PHONY : tinyxml/tinyxmlparser.cpp.i
+
+tinyxml/tinyxmlparser.s: tinyxml/tinyxmlparser.cpp.s
+
+.PHONY : tinyxml/tinyxmlparser.s
+
+# target to generate assembly for a file
+tinyxml/tinyxmlparser.cpp.s:
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.s
+	$(MAKE) -f CMakeFiles/motor.dir/build.make CMakeFiles/motor.dir/tinyxml/tinyxmlparser.cpp.s
+.PHONY : tinyxml/tinyxmlparser.cpp.s
 
 # Help Target
 help:
@@ -184,14 +336,28 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
 	@echo "... CGfase3"
+	@echo "... edit_cache"
+	@echo "... gerador"
+	@echo "... motor"
 	@echo "... src/gerador.o"
 	@echo "... src/gerador.i"
 	@echo "... src/gerador.s"
 	@echo "... src/motor.o"
 	@echo "... src/motor.i"
 	@echo "... src/motor.s"
+	@echo "... tinyxml/tinystr.o"
+	@echo "... tinyxml/tinystr.i"
+	@echo "... tinyxml/tinystr.s"
+	@echo "... tinyxml/tinyxml.o"
+	@echo "... tinyxml/tinyxml.i"
+	@echo "... tinyxml/tinyxml.s"
+	@echo "... tinyxml/tinyxmlerror.o"
+	@echo "... tinyxml/tinyxmlerror.i"
+	@echo "... tinyxml/tinyxmlerror.s"
+	@echo "... tinyxml/tinyxmlparser.o"
+	@echo "... tinyxml/tinyxmlparser.i"
+	@echo "... tinyxml/tinyxmlparser.s"
 .PHONY : help
 
 

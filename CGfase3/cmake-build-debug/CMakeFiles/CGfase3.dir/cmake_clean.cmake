@@ -1,4 +1,8 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o"
+  "CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o"
+  "CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o"
+  "CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o"
   "CMakeFiles/CGfase3.dir/src/motor.cpp.o"
   "CMakeFiles/CGfase3.dir/src/gerador.cpp.o"
   "CGfase3.pdb"

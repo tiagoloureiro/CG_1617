@@ -6,3 +6,4 @@ figura/*
 gerador/*
 motor/*
 makefile
+*/cmake-build-debug/*

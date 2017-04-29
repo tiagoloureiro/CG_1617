@@ -57,9 +57,105 @@ include CMakeFiles/CGfase3.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/CGfase3.dir/flags.make
 
+CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o: CMakeFiles/CGfase3.dir/flags.make
+CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o: ../tinyxml/tinystr.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o -c /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinystr.cpp
+
+CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinystr.cpp > CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.i
+
+CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinystr.cpp -o CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.s
+
+CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o.requires:
+
+.PHONY : CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o.requires
+
+CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o.provides: CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o.requires
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o.provides.build
+.PHONY : CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o.provides
+
+CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o.provides.build: CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o
+
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o: CMakeFiles/CGfase3.dir/flags.make
+CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o: ../tinyxml/tinyxml.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o -c /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinyxml.cpp
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinyxml.cpp > CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.i
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinyxml.cpp -o CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.s
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o.requires:
+
+.PHONY : CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o.requires
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o.provides: CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o.requires
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o.provides.build
+.PHONY : CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o.provides
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o.provides.build: CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o
+
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o: CMakeFiles/CGfase3.dir/flags.make
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o: ../tinyxml/tinyxmlerror.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o -c /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinyxmlerror.cpp
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinyxmlerror.cpp > CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.i
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinyxmlerror.cpp -o CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.s
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o.requires:
+
+.PHONY : CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o.requires
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o.provides: CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o.requires
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o.provides.build
+.PHONY : CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o.provides
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o.provides.build: CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o
+
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o: CMakeFiles/CGfase3.dir/flags.make
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o: ../tinyxml/tinyxmlparser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o -c /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinyxmlparser.cpp
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinyxmlparser.cpp > CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.i
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/tinyxml/tinyxmlparser.cpp -o CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.s
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o.requires:
+
+.PHONY : CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o.requires
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o.provides: CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o.requires
+	$(MAKE) -f CMakeFiles/CGfase3.dir/build.make CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o.provides.build
+.PHONY : CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o.provides
+
+CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o.provides.build: CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o
+
+
 CMakeFiles/CGfase3.dir/src/motor.cpp.o: CMakeFiles/CGfase3.dir/flags.make
 CMakeFiles/CGfase3.dir/src/motor.cpp.o: ../src/motor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/CGfase3.dir/src/motor.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/CGfase3.dir/src/motor.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CGfase3.dir/src/motor.cpp.o -c /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/src/motor.cpp
 
 CMakeFiles/CGfase3.dir/src/motor.cpp.i: cmake_force
@@ -83,7 +179,7 @@ CMakeFiles/CGfase3.dir/src/motor.cpp.o.provides.build: CMakeFiles/CGfase3.dir/sr
 
 CMakeFiles/CGfase3.dir/src/gerador.cpp.o: CMakeFiles/CGfase3.dir/flags.make
 CMakeFiles/CGfase3.dir/src/gerador.cpp.o: ../src/gerador.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CGfase3.dir/src/gerador.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/CGfase3.dir/src/gerador.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CGfase3.dir/src/gerador.cpp.o -c /home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/src/gerador.cpp
 
 CMakeFiles/CGfase3.dir/src/gerador.cpp.i: cmake_force
@@ -107,17 +203,25 @@ CMakeFiles/CGfase3.dir/src/gerador.cpp.o.provides.build: CMakeFiles/CGfase3.dir/
 
 # Object files for target CGfase3
 CGfase3_OBJECTS = \
+"CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o" \
+"CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o" \
+"CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o" \
+"CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o" \
 "CMakeFiles/CGfase3.dir/src/motor.cpp.o" \
 "CMakeFiles/CGfase3.dir/src/gerador.cpp.o"
 
 # External object files for target CGfase3
 CGfase3_EXTERNAL_OBJECTS =
 
+CGfase3: CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o
+CGfase3: CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o
+CGfase3: CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o
+CGfase3: CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o
 CGfase3: CMakeFiles/CGfase3.dir/src/motor.cpp.o
 CGfase3: CMakeFiles/CGfase3.dir/src/gerador.cpp.o
 CGfase3: CMakeFiles/CGfase3.dir/build.make
 CGfase3: CMakeFiles/CGfase3.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable CGfase3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/muhammed/Documentos/1617/Universidade_1617/2_semestre/CG/trabalho_pratico/CGfase3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable CGfase3"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CGfase3.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -125,6 +229,10 @@ CMakeFiles/CGfase3.dir/build: CGfase3
 
 .PHONY : CMakeFiles/CGfase3.dir/build
 
+CMakeFiles/CGfase3.dir/requires: CMakeFiles/CGfase3.dir/tinyxml/tinystr.cpp.o.requires
+CMakeFiles/CGfase3.dir/requires: CMakeFiles/CGfase3.dir/tinyxml/tinyxml.cpp.o.requires
+CMakeFiles/CGfase3.dir/requires: CMakeFiles/CGfase3.dir/tinyxml/tinyxmlerror.cpp.o.requires
+CMakeFiles/CGfase3.dir/requires: CMakeFiles/CGfase3.dir/tinyxml/tinyxmlparser.cpp.o.requires
 CMakeFiles/CGfase3.dir/requires: CMakeFiles/CGfase3.dir/src/motor.cpp.o.requires
 CMakeFiles/CGfase3.dir/requires: CMakeFiles/CGfase3.dir/src/gerador.cpp.o.requires
 

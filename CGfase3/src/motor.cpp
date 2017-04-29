@@ -1,13 +1,10 @@
-#include "../tinyxml/tinyxml.h"
-
-
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
-#include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
+#include "../tinyxml/tinyxml.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <vector>
@@ -35,9 +32,6 @@ vector3f lista_escalas;
 vector3f lista_rotacoes;
 vector<float> lista_angulos;
 
-// o primeiro int é o numero de pontos e o segundo é o numero do buffer;
-vector< tuple <int, int> > VBO;
-
 // Vector que guarda a lista das cores (1 para cada figura)
 vector3f lista_cores;
 
@@ -53,7 +47,7 @@ int translate_x = 0, translate_y = 0, translate_z = 0,
 // flag para mudar o drwing mode
 int flag_drawing_mode = 1;
 
-// ângulos para "rodar a camera"
+// ângulos para "rodar a camera" 
 float alfa = 0.0f, beta = 0.0f, radius = 500.0f;
 float camX = 0.0f, camY = 0.0f, camZ = 0.0f;
 float laX = 0.0f, laY = 0.0f, laZ = 0.0f;
@@ -72,12 +66,6 @@ int modo_camera = 0;
  * Desenha todos os pontos de cada ficheiro e por ficheiro atribui uma cor do vector lista_cores
  */
 
-/** VBO */
-// buffers para os VBOs
-GLuint buffers[1024];
-// auxiliar para apontar para o próximo buffer disponivel;
-int next_buffer = 0;
-
 void definir_cores(){
     lista_cores.push_back(tuple<float,float,float>(1.0, 0.94, 0.0)); //sol
     lista_cores.push_back(tuple<float,float,float>(0.87, 0.72, 0.53)); //mercurio
@@ -95,14 +83,7 @@ void definir_cores(){
     lista_cores.push_back(tuple<float,float,float>(0.76, 0.6, 0.42)); //lua
     lista_cores.push_back(tuple<float,float,float>(0.49, 0.98, 1.0)); //urano
     lista_cores.push_back(tuple<float,float,float>(0.0, 0.0, 0.61)); //neptuno
-    lista_cores.push_back(tuple<float,float,float>(0.97, 0.91, 0.81)); //lua
-}
-
-/* Função que desenha o VBO, recebe numero de pontos e o numero do buffer */
-void drawVBO(int nPontos, int buffer_number) {
-    glBindBuffer(GL_ARRAY_BUFFER, buffers[buffer_number]);
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-    glDrawArrays(GL_TRIANGLES, 0, nPontos);
+    lista_cores.push_back(tuple<float,float,float>(0.97, 0.91, 0.81)); //lua    
 }
 
 void desenha(){
@@ -112,17 +93,14 @@ void desenha(){
     vector3f vertices;  //vector< tuple<float, float, float> >
     float v1 = 0, v2=0, v3=0;
     string str;
-    int primeira_linha = 0, n_triangulos = 0, k = 0;
-    int n_pontos = 0; // guarda numero de pontos de cada figura;
-    float* vertexB = NULL; // buffer para os pontos da figura;
-
+    int primeira_linha = 0;
 
     /*
     * percorrer lista com o nome dos ficheiros
     */
 
     //DEBUG for (int i = 0; i < lista_escalas.size(); ++i){cout << get<0>(lista_escalas[i]) << get<1>(lista_escalas[i])<< get<2>(lista_escalas[i]) << endl;}
-    //DEBUG
+    //DEBUG 
     //for (int i = 0; i < lista_translacoes.size(); ++i){cout << get<0>(lista_translacoes[i]) << get<1>(lista_translacoes[i])<< get<2>(lista_translacoes[i]) << endl;}
 
     for (int i = 0; i <= lista_ficheiros.size()-1; ++i){
@@ -131,32 +109,20 @@ void desenha(){
         //DEBUG cout << lista_ficheiros[i] << i << endl;
         ifstream fi(f);
 
-        // leitura do ficheiro com a figura
         if (fi.is_open()){
             while(getline(fi, str)){ //ler todos os vertices
-                //a primeira linha contem o numero de vertices, (passa a frente) calcular o número de coordenadas;
-                if(primeira_linha == 0){
-                    istringstream ss(str);
-                    ss >> n_triangulos;
-                    // numero de vertices * numero de pontos de 1 triangulo (3);
-                    int n_pontos = n_triangulos * 3;
-                    VBO.push_back(tuple<int,int>(n_triangulos, next_buffer));
-                    // alocar memoria para o buffer;
-                    float *vertexB = (float*)malloc(n_pontos * 3 * sizeof(float));
-                    // ativar uma vez para desenhar os VBOs.
-                    glEnableClientState(GL_VERTEX_ARRAY);
-                    k = 0;
-                    primeira_linha = 1;
+                //a primeira linha contem o numero de vertices, passa a frente
+                if(primeira_linha==0){
+                    primeira_linha=1;
                 }
-                else { // escreve cada uma das coordenadas para v1,v2,v3.
-                    // Posso alterar para guardar automaticamente para o vertexB
+                else {
                     istringstream ss(str);
-                    ss >> vertexB[k++]; // ss >> v1; // ss >> vertexB[k++];
-                    ss >> vertexB[k++]; // ss >> v2; // ss >> vertexB[k++];
-                    ss >> vertexB[k++]; // ss >> v3; // ss >> vertexB[k++];
+                    ss >> v1;
+                    ss >> v2;
+                    ss >> v3;
                     //DEBUG cout << v1 << " "<<v2<< " "<<v3 << endl;
                     vertices.push_back(tuple<float,float,float>(v1,v2,v3));
-                } // e guarda num tuplo no vector vertices
+                }
             }
             fi.close();
             primeira_linha = 0;
@@ -172,25 +138,18 @@ void desenha(){
         definir_cores();
 
         glPushMatrix();
-        // cores e transformações
+
         glColor3f(get<0>(lista_cores[i]), get<1>(lista_cores[i]), get<2>(lista_cores[i]));
         //DEBUG cout << "faz um translate " << get<0>(lista_translacoes[i]) << " " << get<1>(lista_translacoes[i]) << " " << get<2>(lista_translacoes[i]) << endl;
         glTranslatef(get<0>(lista_translacoes[i]), get<1>(lista_translacoes[i]), get<2>(lista_translacoes[i]));
         glRotatef(lista_angulos[i], get<0>(lista_rotacoes[i]),get<1>(lista_rotacoes[i]),get<2>(lista_rotacoes[i]));
         glScalef(get<0>(lista_escalas[i]), get<1>(lista_escalas[i]),get<2>(lista_escalas[i]));
 
-        /* // tem de ser feito com VBOs agora.
         glBegin(GL_TRIANGLES);
-            for (int j = 0; j < vertices.size(); ++j){
-                glVertex3f(get<0>(vertices[j]), get<1>(vertices[j]), get<2>(vertices[j]));
-            }
+        for (int j = 0; j < vertices.size(); ++j){
+            glVertex3f(get<0>(vertices[j]), get<1>(vertices[j]), get<2>(vertices[j]));
+        }
         glEnd();
-        */
-
-        glGenBuffers(1024, buffers);
-        glBindBuffer(GL_ARRAY_BUFFER, buffers[next_buffer++]);
-        glBufferData(GL_ARRAY_BUFFER, n_pontos * sizeof(float), vertexB, GL_STATIC_DRAW);
-        free(vertexB);
 
         glPopMatrix();
 
@@ -199,6 +158,7 @@ void desenha(){
         * clear vector for next file
         */
         vertices.clear();
+
     }
 }
 
@@ -234,6 +194,7 @@ void changeSize(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
+
 void renderScene(void) {
 
     // clear buffers
@@ -250,7 +211,6 @@ void renderScene(void) {
     gluLookAt(camX, camY, camZ,
               laX, laY, laZ,
               0.0f, 1.0f, 0.0f);
-
 
     // put the geometric transformations here
     if(flag_drawing_mode == 0){
@@ -341,8 +301,6 @@ int translacao(TiXmlElement* translate){
     //guardar valores desta translacao
     //lista_translacoes.push_back(tuple<float,float,float>(translate_x,translate_y,translate_z));
     //cout << "faz um translate " << translate_x << " " <<translate_y << " " << translate_z << endl;
-
-    return 0;
 }
 int rotacao(TiXmlElement* rotate){
 
@@ -361,8 +319,6 @@ int rotacao(TiXmlElement* rotate){
     //lista_angulos.push_back(angulo);
     //cout << "faz uma rotacao " << rotate_x << " " <<rotate_y << " " << rotate_z << endl;
 
-    return 0;
-
 }
 int escala(TiXmlElement* scale){
 
@@ -377,10 +333,8 @@ int escala(TiXmlElement* scale){
     //guardar valores desta escala
     //lista_escalas.push_back(tuple<float,float,float>(scale_x,scale_y,scale_z));
     //cout << "faz uma escala " << scale_x << " " <<scale_y << " " << scale_z << endl;
-
-    return 0;
 }
-//int modelo(){}
+int modelo(){}
 
 
 int le_xml(char *nome){
