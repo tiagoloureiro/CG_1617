@@ -1,0 +1,158 @@
+<scene>
+	<group>
+	    <scale X="20" Y="20" Z="20" /> <!-- sol -->
+
+        <models>
+		    <model file="sphere.3d" />
+	    </models>
+	</group>
+
+	<group>
+	    <translate X="28.36"/> <!-- 20 + 8.36 -->
+
+        <scale X="0.09" Y="0.09" Z="0.09" /> <!-- mercurio -->
+
+        <models>
+		    <model file="sphere.3d" />
+	    </models>
+	</group>
+
+	<group>
+	    <translate X="35.5" /> <!-- 15.5 -->
+
+        <scale X="0.17" Y="0.17" Z="0.17" /> <!-- venus -->
+
+        <models>
+		    <model file="sphere.3d" />
+	    </models>
+	</group>
+
+	<group>
+	    <translate X="41.43" /> <!-- 21.43 -->
+
+        <scale X="0.18" Y="0.18" Z="0.18" /> <!-- terra -->
+
+        <models>
+		    <model file="sphere.3d" />
+	    </models>
+
+	    <group>
+            <translate Y="0.21" /> <!-- 0.18/2 + 0.03 -->
+
+            <scale X="0.06" Y="0.06" Z="0.06" /> <!-- lua  -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+	    </group>
+	</group>
+
+	<group>
+	    <translate X="52.7" /> <!-- 32.7 -->
+
+        <scale X="0.09" Y="0.09" Z="0.09" /> <!-- marte -->
+
+        <models>
+		    <model file="sphere.3d" />
+	    </models>
+	</group>
+
+    <group>
+	    <translate X="131.78" /> <!-- 111.78 -->
+
+        <scale X="2.05" Y="2.05" Z="2.05" /> <!-- jupiter -->
+
+        <models>
+		    <model file="sphere.3d" />
+	    </models>
+
+	    <group>
+		    <translate Y="1.55" /> <!-- 2.05/2 + 0.03 -->
+
+            <scale X="0.06" Y="0.06" Z="0.06" /> <!-- lua europa -->
+
+            <models>
+		        <model file="sphere.3d" />
+		    </models>
+	    </group>
+
+	    <group>
+		    <translate Y="1.55" /> <!-- 2.05/2 + 0.03\ -->
+
+            <scale X="0.06" Y="0.06" Z="0.06" /> <!-- lua IO -->
+
+            <models>
+		        <model file="sphere.3d" />
+		    </models>
+	    </group>
+
+        <group>
+            <translate Y="1.55" /> <!-- 2.05/2 + 0.03 -->
+
+            <scale X="0.09" Y="0.09" Z="0.09" /> <!-- lua Ganimedes -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+	    </group>
+
+	    <group>
+            <translate Y="1.55" /> <!-- 2.05/2 + 0.03 -->
+
+            <scale X="0.09" Y="0.09" Z="0.09" /> <!-- lua calisto -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+	    </group>
+	</group>
+
+	<group>
+	    <translate X="225.02" /> <!-- 205.02 -->
+
+        <scale X="1.67" Y="1.67" Z="1.67" /> <!-- saturno -->
+
+        <models>
+		    <model file="sphere.3d" />
+	    </models>
+
+	    <group>
+            <translate Y="0.9" /> <!-- 1.67/2 + 0.03 -->
+
+            <scale X="0.09" Y="0.09" Z="0.09" /> <!-- lua tita -->
+
+            <models>
+                <model file="sphere.3d" />
+            </models>
+	    </group>
+	</group>
+
+	<group>
+	    <translate X="431.74" /> <!-- 411.74 -->
+	    <scale X="0.67" Y="0.6" Z="0.67" /> <!-- urano -->
+	    <models>                        
+		<model file="sphere.3d" />
+	    </models>
+	    
+	</group>
+
+	<group>
+	    <translate X="665.82" /> <!-- 645.82 -->
+
+        <scale X="0.65" Y="0.65" Z="0.65" /> <!-- neptuno -->
+
+        <models>
+		    <model file="sphere.3d" />
+	    </models>
+
+	    <group>
+            <translate Y="0.25" /> <!-- 0.65/2 + 0.03\ -->
+
+            <scale X="0.06" Y="0.06" Z="0.06" /> <!-- lua tritao -->
+
+            <models>
+                <model file='sphere.3d' />
+            </models>
+	    </group>
+	</group>
+</scene>

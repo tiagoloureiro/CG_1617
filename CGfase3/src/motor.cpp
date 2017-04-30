@@ -1,10 +1,12 @@
+// este include tem de ser feito antes do glut caso contrario dá "exit redefenition" (no V.Studio).
+#include "../lib/tinyxml/tinyxml.h"
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
+#include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
-#include "../lib/tinyxml/tinyxml.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <vector>
@@ -17,20 +19,20 @@
 #include <tuple>
 
 
-//#include <bits/stdc++.h> //faz include de diversas lib ver: https://gist.github.com/eduarc/6022859
-
 // para não estar sempre a escrever std::
 using namespace std;
 
-//Estrutura para guardar os vertices
+//Estrutura para guardar 3 floats
 typedef vector< tuple<float, float, float> > vector3f;
 
 // Vector que guarda a lista de ficheiros
-vector<string> lista_ficheiros;
 vector3f lista_translacoes;
 vector3f lista_escalas;
 vector3f lista_rotacoes;
 vector<float> lista_angulos;
+
+// Vector que guarda o nome de todos os ficheiros
+vector<string> lista_ficheiros;
 
 // Vector que guarda a lista das cores (1 para cada figura)
 vector3f lista_cores;
@@ -50,11 +52,29 @@ int flag_drawing_mode = 1;
 // ângulos para "rodar a camera" 
 float alfa = 0.0f, beta = 0.0f, radius = 500.0f;
 float camX = 0.0f, camY = 0.0f, camZ = 0.0f;
-float laX = 0.0f, laY = 0.0f, laZ = 0.0f;
-/* visao lateral dos planetas
-float alfa = 0.0f, beta = 0.0f, radius = 7.0f;
-float camX = 100, camY, camZ;
-*/
+
+/**##############################################################################
+###############+++#########+++###++++++++######++++++++++########################
+################+++#######+++####+++###+++####+++######+++#######################
+#################+++#####+++#####+++###+++####+++######+++####++++###############
+##################+++###+++######+++++++######+++######+++###+###################
+###################+++#+++#######+++####+++###+++######+++####+++################
+####################+++++########+++####+++###+++######+++#######+###############
+#####################+++#########+++++++#######++++++++++####++++################
+###############################################################################*/
+// o primeiro int é o numero de pontos e o segundo é o indice do buffer;
+vector< tuple <int, int> > VBO;
+vector<tuple <int, GLuint> > VBO2; // <tuple <n_pontos, buffer> >
+
+// buffers para os VBOs
+GLuint buffers[1024];
+// auxiliar para apontar para o próximo buffer disponivel;
+int next_buffer = 0;
+// frames per second
+int frame = 0, fps = 0, timebase, times;
+char print[20] = "";
+
+
 /* Ainda não é usado
 float dx = 0.0f;
 float dy = 0.0f;
@@ -86,14 +106,25 @@ void definir_cores(){
     lista_cores.push_back(tuple<float,float,float>(0.97, 0.91, 0.81)); //lua    
 }
 
-void desenha(){
+// função para desenhar a figura a partir dos dados guardados nos buffers;
+void drawVBO(){
+
+    for (int j = 0; j < VBO.size(); ++j) {
+        glBindBuffer(GL_ARRAY_BUFFER, buffers[j]);
+        glVertexPointer(3, GL_FLOAT, 0, 0);
+        glDrawArrays(GL_TRIANGLES, 0, get<0>(VBO[j]));
+    }
+}
+
+void desenha() {
     /*
     * Variaveis
     */
     vector3f vertices;  //vector< tuple<float, float, float> >
-    float v1 = 0, v2=0, v3=0;
+    float v1 = 0, v2 = 0, v3 = 0;
     string str;
-    int primeira_linha = 0;
+    int primeira_linha = 0, k = 0, n_triangulos = 0, n_pontos = 0, n_vertices;
+    float *vertexB = NULL; // array para os vértices;
 
     /*
     * percorrer lista com o nome dos ficheiros
@@ -103,32 +134,54 @@ void desenha(){
     //DEBUG 
     //for (int i = 0; i < lista_translacoes.size(); ++i){cout << get<0>(lista_translacoes[i]) << get<1>(lista_translacoes[i])<< get<2>(lista_translacoes[i]) << endl;}
 
-    for (int i = 0; i <= lista_ficheiros.size()-1; ++i){
+    for (int i = 0; i <= lista_ficheiros.size() - 1; ++i) {
 
         const char *f = lista_ficheiros[i].c_str();
         //DEBUG cout << lista_ficheiros[i] << i << endl;
         ifstream fi(f);
 
-        if (fi.is_open()){
-            while(getline(fi, str)){ //ler todos os vertices
-                //a primeira linha contem o numero de vertices, passa a frente
-                if(primeira_linha==0){
-                    primeira_linha=1;
+        if (fi.is_open()) {
+            while (getline(fi, str)) { //ler todos os vertices
+                //a primeira linha contem o numero de vertices, calcular espaço para o array vertexB;
+                if (primeira_linha == 0) {
+                    istringstream ss(str);
+                    ss >> n_triangulos; // guardar numero de triangulos
+                    n_pontos = 3 * n_triangulos; // calcular numero de pontos
+                    vertexB = (float*)malloc(3 * n_pontos * sizeof(float));
+                    k = 0; // reinicializar iterador do vertexB;
+                    primeira_linha = 1;
                 }
                 else {
-                    istringstream ss(str);
-                    ss >> v1;
-                    ss >> v2;
-                    ss >> v3;
-                    //DEBUG cout << v1 << " "<<v2<< " "<<v3 << endl;
-                    vertices.push_back(tuple<float,float,float>(v1,v2,v3));
+                    istringstream ss(str); //carregar cada um dos vértices para o vertexB;
+                    ss >> vertexB[k++]; // ss >> v1;
+                    ss >> vertexB[k++]; // ss >> v2;
+                    ss >> vertexB[k++]; // ss >> v3;
+                    //DEBUG cout << v1 << " " << v2 << " " << v3 << endl;
+
+                    // isto já não faz nada porque carregamos directamente para o array vertexB.
+                    // Mas podia guardar primeiro para (v1,v2,v3), depois para o vector vertices
+                    // e carregar depois para o array vertexB.
+                    vertices.push_back(tuple<float, float, float>(v1, v2, v3));
                 }
             }
             fi.close();
+            // gerar o buffer;
+            glGenBuffers(1, &buffers[next_buffer]);
+            // fazer bind do buffer;
+            glBindBuffer(GL_ARRAY_BUFFER, buffers[next_buffer]);
+            // preencher o buffer com os dados da figura;
+            glBufferData(GL_ARRAY_BUFFER, n_pontos * 3 * sizeof(float), vertexB, GL_STATIC_DRAW);
+            // vector que guarda o numero de pontos e qual o buffer associado;
+            VBO.push_back(tuple<int, int>(n_pontos, next_buffer));
+            // avançar para o próximo buffer;
+            next_buffer++;
+            // libertar o array com os dados da figura, visto que já está no buffer da gráfica;
+            free(vertexB);
             primeira_linha = 0;
         }
-        else{
-            cerr << "Error: Cannot open file '" << lista_ficheiros[i] << "'." << endl;
+        else {
+            cerr << "Erro: Não foi possível abrir o ficheiro " << lista_ficheiros[i] << "." << endl;
+            exit(1);
         }
 
         /*
@@ -142,23 +195,21 @@ void desenha(){
         glColor3f(get<0>(lista_cores[i]), get<1>(lista_cores[i]), get<2>(lista_cores[i]));
         //DEBUG cout << "faz um translate " << get<0>(lista_translacoes[i]) << " " << get<1>(lista_translacoes[i]) << " " << get<2>(lista_translacoes[i]) << endl;
         glTranslatef(get<0>(lista_translacoes[i]), get<1>(lista_translacoes[i]), get<2>(lista_translacoes[i]));
-        glRotatef(lista_angulos[i], get<0>(lista_rotacoes[i]),get<1>(lista_rotacoes[i]),get<2>(lista_rotacoes[i]));
-        glScalef(get<0>(lista_escalas[i]), get<1>(lista_escalas[i]),get<2>(lista_escalas[i]));
+        glRotatef(lista_angulos[i], get<0>(lista_rotacoes[i]), get<1>(lista_rotacoes[i]), get<2>(lista_rotacoes[i]));
+        glScalef(get<0>(lista_escalas[i]), get<1>(lista_escalas[i]), get<2>(lista_escalas[i]));
 
-        glBegin(GL_TRIANGLES);
-        for (int j = 0; j < vertices.size(); ++j){
+        /**glBegin(GL_TRIANGLES);
+        for (int j = 0; j < vertices.size(); ++j) {
             glVertex3f(get<0>(vertices[j]), get<1>(vertices[j]), get<2>(vertices[j]));
         }
-        glEnd();
+        glEnd();*/
 
         glPopMatrix();
-
 
         /*
         * clear vector for next file
         */
         vertices.clear();
-
     }
 }
 
@@ -194,7 +245,6 @@ void changeSize(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-
 void renderScene(void) {
 
     // clear buffers
@@ -202,15 +252,19 @@ void renderScene(void) {
 
     // set the camera
     glLoadIdentity();
-    /* visao lateral dos planetas
+/*     //visao lateral dos planetas
     gluLookAt(300, 0, 1000,
               300.0f, 0.0f, 0.0f,
               0.0f, 1.0f, 0.0f);
-    */
+*/
 
-    gluLookAt(camX, camY, camZ,
-              laX, laY, laZ,
+    gluLookAt(5.0f, 5.0f, 5.0f,
+              0.0f, 0.0f, 0.0f,
               0.0f, 1.0f, 0.0f);
+
+    /*gluLookAt(camX, camY, camZ,
+        250.0f, 50.0f, 50.0f,
+        0.0f, 1.0f, 0.0f);*/
 
     // put the geometric transformations here
     if(flag_drawing_mode == 0){
@@ -221,35 +275,30 @@ void renderScene(void) {
         glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
     }
 
+
+    glEnableClientState(GL_VERTEX_ARRAY);
     //glutWireTeapot(1);
     desenha();
+    drawVBO();
+
+    frame++;
+    times = glutGet(GLUT_ELAPSED_TIME);
+    if (times - timebase > 1000)
+    {
+        fps = frame*1000.0 / (times - timebase);
+        timebase = times;
+        frame = 0;
+    }
+    sprintf(print, "%d", fps);
+    glutSetWindowTitle(print);
 
     // End of frame
     glutSwapBuffers();
 }
 
-
 void processKeys(unsigned char c, int xx, int yy) {
-    switch (c){
-        case 'w':
-            laY += 10.0f;
-            break;
-        case 's':
-            laY -= 10.0f;
-            break;
-        case 'a':
-            laX -= 10.0f;
-            break;
-        case 'd':
-            laX += 10.0f;
-            break;
-        default:
-            break;
-    }
-
-    glutPostRedisplay();
+    if (c == 27) exit(0);
 }
-
 
 void processSpecialKeys(int key, int xx, int yy) {
 
@@ -273,20 +322,19 @@ void processSpecialKeys(int key, int xx, int yy) {
             break;
 
         case GLUT_KEY_PAGE_UP:
-            radius -= 10.0f;
+            radius -= 0.1f;
             if (radius < 0.1f)
                 radius = 0.1f;
             break;
 
         case GLUT_KEY_PAGE_DOWN:
-            radius += 10.0f;
+            radius += 0.1f;
             break;
     }
     spherical2Cartesian();
     glutPostRedisplay();
 
 }
-
 
 int translacao(TiXmlElement* translate){
 
@@ -301,6 +349,7 @@ int translacao(TiXmlElement* translate){
     //guardar valores desta translacao
     //lista_translacoes.push_back(tuple<float,float,float>(translate_x,translate_y,translate_z));
     //cout << "faz um translate " << translate_x << " " <<translate_y << " " << translate_z << endl;
+    return 0;
 }
 int rotacao(TiXmlElement* rotate){
 
@@ -318,7 +367,7 @@ int rotacao(TiXmlElement* rotate){
     //lista_rotacoes.push_back(tuple<float,float,float>(rotate_x,rotate_y,rotate_z));
     //lista_angulos.push_back(angulo);
     //cout << "faz uma rotacao " << rotate_x << " " <<rotate_y << " " << rotate_z << endl;
-
+    return 0;
 }
 int escala(TiXmlElement* scale){
 
@@ -333,16 +382,19 @@ int escala(TiXmlElement* scale){
     //guardar valores desta escala
     //lista_escalas.push_back(tuple<float,float,float>(scale_x,scale_y,scale_z));
     //cout << "faz uma escala " << scale_x << " " <<scale_y << " " << scale_z << endl;
+    return 0;
 }
-int modelo(){}
-
+//int modelo(){}
 
 int le_xml(char *nome){
     int erros = 0;
-    string caminho = "xml/" + (string)nome;
+    //string caminho = "xml/" + (string)nome;
+
+    // DEBUG WINDOWS. Tenho de passar o caminho completo até ao ficheiro. O xml tbm tem de ser alterado.
+    //string caminho = "C:\\Users\\Utilizador\\Downloads\\CG_1617-master (2)\\CG_1617-master\\CGfase2\\motor\\esfera.xml";
+    string caminho = "../";
 
     TiXmlDocument doc;
-
 
     if(!doc.LoadFile(caminho.c_str()) ){
         cout << "Nome do ficheiro inválido" << caminho << endl;
@@ -479,6 +531,8 @@ int main(int argc, char **argv) {
     glutKeyboardFunc(processKeys);
     glutSpecialFunc(processSpecialKeys);
 
+    glewInit();
+
 // MENUS
     glutDetachMenu(GLUT_RIGHT_BUTTON);
     createGLUTMenus();
@@ -501,6 +555,7 @@ int main(int argc, char **argv) {
     }*/
 
     le_xml(argv[1]);
+    //le_xml("universo.xml");
     //cout << lista_ficheiros.size() << endl;
     //desenha();
     glutPostRedisplay();
