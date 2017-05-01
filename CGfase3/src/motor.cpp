@@ -29,6 +29,7 @@ vector3f lista_translacoes;
 vector3f lista_escalas;
 vector3f lista_rotacoes;
 vector<float> lista_angulos;
+vector<int> lista_times;
 
 // Vector que guarda o nome de todos os ficheiros
 vector<string> lista_ficheiros;
@@ -38,8 +39,8 @@ vector3f lista_cores;
 
 //variaveis de transformacoes usadas ao ler o XML
 float translate_x = 0, translate_y = 0, translate_z = 0,
-        scale_x = 1, scale_y = 1, scale_z = 1,
-        angulo = 0, rotate_x = 0, rotate_y = 0, rotate_z = 0;
+scale_x = 1, scale_y = 1, scale_z = 1,
+angulo = 0, rotate_x = 0, rotate_y = 0, rotate_z = 0;
 /* Ainda não é usado
 #define EXP 0
 #define FPS 1
@@ -49,9 +50,8 @@ float translate_x = 0, translate_y = 0, translate_z = 0,
 int flag_drawing_mode = 1;
 
 // ângulos para "rodar a camera"
-float alfa = 0.0f, beta = 0.0f, radius = 444.444f;
-float lax = 0.0f, lay = 0.0f, laz = 0.0f;
-float camX, camY, camZ;
+float alfa = 0.0f, beta = 0.0f, radius = 500;
+float camX = 0.0f, camY = 0.0f, camZ = 0.0f;
 
 /**##############################################################################
 ###############+++#########+++###++++++++######++++++++++########################
@@ -63,8 +63,9 @@ float camX, camY, camZ;
 #####################+++#########+++++++#######++++++++++####++++################
 ###############################################################################*/
 // o primeiro int é o numero de pontos e o segundo é o indice do buffer;
-vector< tuple <int, int> > VBO;
+vector< tuple <int, int> > VBO; //numero de pontos, indice do VBO
 vector<tuple <int, GLuint> > VBO2; // <tuple <n_pontos, buffer> >
+
 // buffers para os VBOs
 GLuint *buffers = NULL;
 // auxiliar para apontar para o próximo buffer disponivel;
@@ -83,6 +84,57 @@ int modo_camera = 0;
 /* Esta função vai buscar os nomes dos ficheiros .3d que estão no vector lista_ficheiros
 * Desenha todos os pontos de cada ficheiro e por ficheiro atribui uma cor do vector lista_cores
 */
+
+#define POINT_COUNT 5
+vector<vector3f> lista_pontos_translacao; // vector com lista de todos os pontos da curva catmull
+//int time_t = 0;
+// funções catmull-rom da aula;
+void getCatmullRomPoint(float t, int *indices, float *res) {
+
+    int i, j, k;
+    float aux[4];
+    float aux_t[4];
+    aux_t[0] = t*t*t; aux_t[1] = t*t; aux_t[2] = t; aux_t[3] = 1;
+
+    // catmull-rom matrix
+    float m[4][4] = { { -0.5f,  1.5f, -1.5f,  0.5f },
+    { 1.0f, -2.5f,  2.0f, -0.5f },
+    { -0.5f,  0.0f,  0.5f,  0.0f },
+    { 0.0f,  1.0f,  0.0f,  0.0f } };
+
+    res[0] = 0.0; res[1] = 0.0; res[2] = 0.0;
+    // Compute point res = T * M * P
+    // where Pi = p[indices[i]]
+    for (int i = 0; i < 3; i++) {
+        for (j = 0; j < 4; j++) {
+            aux[j] = 0;
+            for (k = 0; k < 4; k++) {
+                aux[i] += (aux_t[k] * m[k][j]);
+            }
+        }
+
+        /*for (j = 0; j < 4; j++) {
+            res[i] += aux[j] * getAt(indices[j], points, i);
+        }*/
+    }
+}
+
+// given  global t, returns the point in the curve
+void getGlobalCatmullRomPoint(float gt, float *res) {
+
+    float t = gt * POINT_COUNT; // this is the real global t
+    int index = floor(t);  // which segment
+    t = t - index; // where within the segment
+
+                   // indices store the points
+    int indices[4];
+    indices[0] = (index + POINT_COUNT - 1) % POINT_COUNT;
+    indices[1] = (indices[0] + 1) % POINT_COUNT;
+    indices[2] = (indices[1] + 1) % POINT_COUNT;
+    indices[3] = (indices[2] + 1) % POINT_COUNT;
+
+    getCatmullRomPoint(t, indices, res);
+}
 
 void definir_cores() {
     lista_cores.push_back(tuple<float, float, float>(1.0, 0.94, 0.0)); //sol
@@ -104,18 +156,18 @@ void definir_cores() {
     lista_cores.push_back(tuple<float, float, float>(0.97, 0.91, 0.81)); //lua
 }
 
-// função para desenhar a figura a partir dos dados guardados nos buffers;
-void drawVBO() {
-
-    for (int j = 0; j < VBO.size(); ++j) {
-        glBindBuffer(GL_ARRAY_BUFFER, get<1>(VBO2[j]));
-        glVertexPointer(3, GL_FLOAT, 0, 0);
-        glDrawArrays(GL_TRIANGLES, 0, get<0>(VBO2[j]));
-    }
-}
+//// função para desenhar a figura a partir dos dados guardados nos buffers;
+//void drawVBO() {
+//
+//    for (int j = 0; j < VBO.size(); ++j) {
+//        glBindBuffer(GL_ARRAY_BUFFER, get<1>(VBO2[j]));
+//        glVertexPointer(3, GL_FLOAT, 0, 0);
+//        glDrawArrays(GL_TRIANGLES, 0, get<0>(VBO2[j]));
+//    }
+//}
 
 // esta função apenas é invocada na main para ler os ficheiros com os objectos para a memória do PC.
-void gurada_ficheiro() {
+void desenha() {
     /*
     * Variaveis
     */
@@ -146,7 +198,7 @@ void gurada_ficheiro() {
 
         if (fi.is_open()) {
             while (getline(fi, str)) { //ler todos os vertices
-                //a primeira linha contem o numero de vertices, calcular espaço para o array vertexB;
+                                       //a primeira linha contem o numero de vertices, calcular espaço para o array vertexB;
                 if (primeira_linha == 0) {
                     istringstream ss(str);
                     ss >> n_triangulos; // guardar numero de triangulos
@@ -189,13 +241,14 @@ void gurada_ficheiro() {
             exit(1);
         }
 
+        /** clear vector for next file*/
         vertices.clear();
     }
     printf("\n");
 }
 
 // invocada na renderScene porque puxa menos pelo pc e tenho de desenhar o VBO a seguir à transformação;
-void desenha() {
+void desenha2() {
     for (int i = 0, k = 0; i <= lista_ficheiros.size() - 1; ++i) {
         const char *f = lista_ficheiros[i].c_str();
         //DEBUG cout << lista_ficheiros[i] << i << endl;
@@ -261,9 +314,7 @@ void renderScene(void) {
 
     // set the camera
     glLoadIdentity();
-    gluLookAt(camX, camY, camZ, // posição da camara
-              lax, lay, laz,
-              0.0f, 1.0f, 0.0f); // vector up
+    gluLookAt(cos(beta)*sin(alfa)*radius, sin(beta)*radius, cos(beta)*cos(alfa)*radius, 0, 0, 0, 0, 1, 0);
 
     /*visao lateral dos planetas*/
     /*gluLookAt(camX, camY, camZ,
@@ -282,7 +333,12 @@ void renderScene(void) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
     }
 
-    desenha();
+    //glutWireTeapot(1);
+    //desenha();
+    //glPushMatrix();
+    desenha2();
+    //glPopMatrix();
+    //drawVBO();
 
     frame++;
     times = glutGet(GLUT_ELAPSED_TIME);
@@ -301,49 +357,38 @@ void renderScene(void) {
 
 void processKeys(unsigned char c, int xx, int yy) {
     if (c == 27) exit(0);
-    switch (c){
-        case 'w': ;
-            break;
-        case 's': ;
-            break;
-        case 'a': ;
-            break;
-        case 'd': ;
-            break;
-        default: break;
-    }
 }
 
 void processSpecialKeys(int key, int xx, int yy) {
 
     switch (key) {
-        case GLUT_KEY_RIGHT:
-            alfa -= 0.1; break;
+    case GLUT_KEY_RIGHT:
+        alfa -= 0.1; break;
 
-        case GLUT_KEY_LEFT:
-            alfa += 0.1; break;
+    case GLUT_KEY_LEFT:
+        alfa += 0.1; break;
 
-        case GLUT_KEY_UP:
-            beta += 0.1f;
-            if (beta > 1.5f)
-                beta = 1.5f;
-            break;
+    case GLUT_KEY_UP:
+        beta += 0.1f;
+        if (beta > 1.5f)
+            beta = 1.5f;
+        break;
 
-        case GLUT_KEY_DOWN:
-            beta -= 0.1f;
-            if (beta < -1.5f)
-                beta = -1.5f;
-            break;
+    case GLUT_KEY_DOWN:
+        beta -= 0.1f;
+        if (beta < -1.5f)
+            beta = -1.5f;
+        break;
 
-        case GLUT_KEY_PAGE_DOWN:
-            radius -= 0.1f;
-            if (radius < 0.1f)
-                radius = 0.1f;
-            break;
+    case GLUT_KEY_PAGE_UP:
+        radius -= 0.8f;
+        if (radius < 0.1f)
+            radius = 0.8f;
+        break;
 
-        case GLUT_KEY_PAGE_UP:
-            radius += 0.1f;
-            break;
+    case GLUT_KEY_PAGE_DOWN:
+        radius += 0.8f;
+        break;
     }
     spherical2Cartesian();
     glutPostRedisplay();
@@ -351,7 +396,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 }
 
 int translacao(TiXmlElement* translate) {
-
+    //translate_x = 0, translate_y = 0, translate_z = 0;
     const char *aux_x = translate->Attribute("X");
     const char *aux_y = translate->Attribute("Y");
     const char *aux_z = translate->Attribute("Z");
@@ -404,19 +449,21 @@ int le_xml(char *nome) {
     int erros = 0;
     //string caminho = "xml/" + (string)nome;
 
-    // DEBUG WINDOWS. Tenho de passar o caminho completo até ao ficheiro. O xml tbm tem de ser alterado.
-    //string caminho = "C:\\Users\\Utilizador\\Downloads\\CG_1617-master (2)\\CG_1617-master\\CGfase2\\motor\\universo.xml";
-    string caminho = "../";
-    caminho += nome;
+    string caminho_windows = "..\\"; //WINDOWS
+    string caminho_unix = "../"; //Unix
+    caminho_windows += nome;
 
     TiXmlDocument doc;
 
-    if (!doc.LoadFile(nome)) {
-        if(!doc.LoadFile(caminho.c_str())) {
-            cout << "Nome do ficheiro inválido " << nome << endl;
-            return erros + 1;
+    if(!doc.LoadFile(nome)) {
+        if (!doc.LoadFile(caminho_unix.c_str())) {
+            if (!doc.LoadFile(caminho_windows.c_str())) {
+                cout << "Nome do ficheiro inválido" << nome << endl;
+                return erros + 1;
+            }
         }
     }
+
 
     //scene
     TiXmlElement* raiz = doc.FirstChildElement();
@@ -428,15 +475,29 @@ int le_xml(char *nome) {
 
         // TRANSLATE
         TiXmlElement* translate = grupo_ext->FirstChildElement("translate");
-        if (translate != NULL)
+        if (translate != NULL) { // entrar no translate;
             translacao(translate);
+            //const char* t_aux = translate->Attribute("time"); // guardar time;
+            //if (t_aux) { // se time existir, converter para int e ler pontos;
+            //    time_t = atoi(t_aux); // conversão
+            //    lista_times.push_back(time_t); // guardar
+            //    while (TiXmlElement* point = translate->NextSiblingElement("point")) { // enquanto tiver pontos
+            //        translacao(translate); // tratar da translação;
+            //                               // guardar esta translação no vector;
+            //        lista_translacoes.push_back(tuple<float, float, float>(translate_x, translate_y, translate_z));
+            //    }
+            //    // guardar pontos da translação;
+            //    lista_pontos_translacao.push_back(lista_translacoes);
+            //    lista_translacoes.clear(); //
+            //}
+        }
 
         // ROTATE
         TiXmlElement* rotate = grupo_ext->FirstChildElement("rotate");
         if (rotate != NULL)
             rotacao(rotate);
 
-        // ROTATE
+        // SCALE
         TiXmlElement* scale = grupo_ext->FirstChildElement("scale");
         if (scale != NULL)
             escala(scale);
@@ -455,6 +516,7 @@ int le_xml(char *nome) {
             lista_rotacoes.push_back(tuple<float, float, float>(rotate_x, rotate_y, rotate_z));
             lista_angulos.push_back(angulo);
             lista_translacoes.push_back(tuple<float, float, float>(translate_x, translate_y, translate_z));
+            //lista_times.push_back(time);
             lista_escalas.push_back(tuple<float, float, float>(scale_x, scale_y, scale_z));
 
         }
@@ -463,15 +525,30 @@ int le_xml(char *nome) {
         for (grupo_int = grupo_ext->FirstChildElement("group"); grupo_int; grupo_int = grupo_int->NextSiblingElement("group")) {
             // TRANSLATE
             TiXmlElement* translate = grupo_int->FirstChildElement("translate");
-            if (translate != NULL)
+            if (translate != NULL) { // entrar no translate;
                 translacao(translate);
+                //const char* t_aux = translate->Attribute("time"); // guardar time;
+                //if (t_aux) { // se time existir, converter para int e ler pontos;
+                //    time_t = atoi(t_aux); // conversão
+                //    lista_times.push_back(time_t); // guardar
+                //    while (TiXmlElement* point = translate->NextSiblingElement("point")) { // enquanto tiver pontos
+                //        translacao(translate); // tratar da translação;
+                //        // guardar esta translação no vector;
+                //        lista_translacoes.push_back(tuple<float, float, float>(translate_x, translate_y, translate_z));
+                //    }
+                //    // guardar pontos da translação;
+                //    lista_pontos_translacao.push_back(lista_translacoes);
+                //    lista_translacoes.clear(); //
+                //}
+            }
+
 
             // ROTATE
             TiXmlElement* rotate = grupo_int->FirstChildElement("rotate");
             if (rotate != NULL)
                 rotacao(rotate);
 
-            // ROTATE
+            // SCALE
             TiXmlElement* scale = grupo_int->FirstChildElement("scale");
             if (scale != NULL)
                 escala(scale);
@@ -490,29 +567,29 @@ int le_xml(char *nome) {
                 lista_rotacoes.push_back(tuple<float, float, float>(rotate_x, rotate_y, rotate_z));
                 lista_angulos.push_back(angulo);
                 lista_translacoes.push_back(tuple<float, float, float>(translate_x, translate_y, translate_z));
+                //lista_times.push_back(time);
                 lista_escalas.push_back(tuple<float, float, float>(scale_x, scale_y, scale_z));
 
             }
         }
     }
-
     return 0;
 }
 
 void processMenuEvents(int option) {
 
     switch (option) {
-        case 0:
-            flag_drawing_mode = 0;
-            break;
-        case 1:
-            flag_drawing_mode = 1;
-            break;
-        case 2:
-            flag_drawing_mode = 2;
-            break;
-        default:
-            break;
+    case 0:
+        flag_drawing_mode = 0;
+        break;
+    case 1:
+        flag_drawing_mode = 1;
+        break;
+    case 2:
+        flag_drawing_mode = 2;
+        break;
+    default:
+        break;
     }
 
     glutPostRedisplay();
@@ -566,7 +643,7 @@ int main(int argc, char **argv) {
     createGLUTMenus();
 
 
-    //  OpenGL settings
+    // OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     //glEnableClientState(GL_VERTEX_ARRAY);
@@ -584,9 +661,9 @@ int main(int argc, char **argv) {
     }*/
 
     le_xml(argv[1]);
-    //le_xml("universo.xml");
+
     //cout << lista_ficheiros.size() << endl;
-    gurada_ficheiro();
+    desenha();
     glutPostRedisplay();
     spherical2Cartesian();
     printInfo();
