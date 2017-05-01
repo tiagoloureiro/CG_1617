@@ -11,3 +11,5 @@ makefile
 */bin/*
 !*/bin/motor
 !*/bin/gerador
+teste.xml
+universo_2.xml
