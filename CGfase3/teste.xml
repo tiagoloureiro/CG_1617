@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<scene>
+
+    <!-- COMET -->
+    <group>
+        <translate time="20">
+            <point x="-5" y="0" z="0" />
+            <point x="2" y="0" z="0" />
+            <point x="5" y="0" z="0" />
+            <point x="-5" y="0" z="0" />
+        </translate>
+        <models>
+            <model file="teapot.3d"/>
+        </models>
+    </group>
+
+</scene>
