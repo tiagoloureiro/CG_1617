@@ -13,7 +13,7 @@
         <scale X="0.09" Y="0.09" Z="0.09" /> <!-- mercurio -->
 
         <models>
-		    <model file="sphere.3d" />
+			<model file="sphere.3d" />
 	    </models>
 	</group>
 
@@ -131,7 +131,7 @@
 	    <translate X="431.74" /> <!-- 411.74 -->
 	    <scale X="0.67" Y="0.6" Z="0.67" /> <!-- urano -->
 	    <models>                        
-		<model file="sphere.3d" />
+			<model file="sphere.3d" />
 	    </models>
 	    
 	</group>
@@ -151,7 +151,7 @@
             <scale X="0.06" Y="0.06" Z="0.06" /> <!-- lua tritao -->
 
             <models>
-                <model file='sphere.3d' />
+                <model file="sphere.3d" />
             </models>
 	    </group>
 	</group>
