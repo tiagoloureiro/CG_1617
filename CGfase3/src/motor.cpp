@@ -18,7 +18,6 @@
 #include <string>
 #include <tuple>
 
-
 // para não estar sempre a escrever std::
 using namespace std;
 
@@ -38,7 +37,7 @@ vector<string> lista_ficheiros;
 vector3f lista_cores;
 
 //variaveis de transformacoes usadas ao ler o XML
-int translate_x = 0, translate_y = 0, translate_z = 0,
+float translate_x = 0, translate_y = 0, translate_z = 0,
         scale_x = 1, scale_y = 1, scale_z = 1,
         angulo = 0, rotate_x = 0, rotate_y = 0, rotate_z = 0;
 /* Ainda não é usado
@@ -49,9 +48,10 @@ int translate_x = 0, translate_y = 0, translate_z = 0,
 // flag para mudar o drwing mode
 int flag_drawing_mode = 1;
 
-// ângulos para "rodar a camera" 
-float alfa = 0.0f, beta = 0.0f, radius = 500.0f;
-float camX = 0.0f, camY = 0.0f, camZ = 0.0f;
+// ângulos para "rodar a camera"
+float alfa = 0.0f, beta = 0.0f, radius = 444.444f;
+float lax = 0.0f, lay = 0.0f, laz = 0.0f;
+float camX, camY, camZ;
 
 /**##############################################################################
 ###############+++#########+++###++++++++######++++++++++########################
@@ -65,58 +65,57 @@ float camX = 0.0f, camY = 0.0f, camZ = 0.0f;
 // o primeiro int é o numero de pontos e o segundo é o indice do buffer;
 vector< tuple <int, int> > VBO;
 vector<tuple <int, GLuint> > VBO2; // <tuple <n_pontos, buffer> >
-
 // buffers para os VBOs
-GLuint buffers[1024];
+GLuint *buffers = NULL;
 // auxiliar para apontar para o próximo buffer disponivel;
 int next_buffer = 0;
 // frames per second
 int frame = 0, fps = 0, timebase, times;
 char print[20] = "";
 
-
 /* Ainda não é usado
 float dx = 0.0f;
 float dy = 0.0f;
 float dz = 0.0f;
 int modo_camera = 0;
- */
+*/
 
 /* Esta função vai buscar os nomes dos ficheiros .3d que estão no vector lista_ficheiros
- * Desenha todos os pontos de cada ficheiro e por ficheiro atribui uma cor do vector lista_cores
- */
+* Desenha todos os pontos de cada ficheiro e por ficheiro atribui uma cor do vector lista_cores
+*/
 
-void definir_cores(){
-    lista_cores.push_back(tuple<float,float,float>(1.0, 0.94, 0.0)); //sol
-    lista_cores.push_back(tuple<float,float,float>(0.87, 0.72, 0.53)); //mercurio
-    lista_cores.push_back(tuple<float,float,float>(0.82, 0.41, 0.12)); //venus
-    lista_cores.push_back(tuple<float,float,float>(0.29, 0.59, 0.82)); //terra
-    lista_cores.push_back(tuple<float,float,float>(0.97, 0.91, 0.81)); //lua
-    lista_cores.push_back(tuple<float,float,float>(0.76, 0.23, 0.13)); //marte
-    lista_cores.push_back(tuple<float,float,float>(0.97, 0.91, 0.56)); //jupiter
-    lista_cores.push_back(tuple<float,float,float>(0.57, 0.64, 0.69)); //lua
-    lista_cores.push_back(tuple<float,float,float>(0.83, 0.69, 0.22)); //lua
-    lista_cores.push_back(tuple<float,float,float>(0.66, 0.6, 0.53)); //lua
-    lista_cores.push_back(tuple<float,float,float>(0.4, 0.22, 0.33)); //lua
-    lista_cores.push_back(tuple<float,float,float>(0.9, 0.67, 0.44)); //saturno
-    lista_cores.push_back(tuple<float,float,float>(0.76, 0.6, 0.42)); //lua
-    lista_cores.push_back(tuple<float,float,float>(0.76, 0.6, 0.42)); //lua
-    lista_cores.push_back(tuple<float,float,float>(0.49, 0.98, 1.0)); //urano
-    lista_cores.push_back(tuple<float,float,float>(0.0, 0.0, 0.61)); //neptuno
-    lista_cores.push_back(tuple<float,float,float>(0.97, 0.91, 0.81)); //lua    
+void definir_cores() {
+    lista_cores.push_back(tuple<float, float, float>(1.0, 0.94, 0.0)); //sol
+    lista_cores.push_back(tuple<float, float, float>(0.87, 0.72, 0.53)); //mercurio
+    lista_cores.push_back(tuple<float, float, float>(0.82, 0.41, 0.12)); //venus
+    lista_cores.push_back(tuple<float, float, float>(0.29, 0.59, 0.82)); //terra
+    lista_cores.push_back(tuple<float, float, float>(0.97, 0.91, 0.81)); //lua
+    lista_cores.push_back(tuple<float, float, float>(0.76, 0.23, 0.13)); //marte
+    lista_cores.push_back(tuple<float, float, float>(0.97, 0.91, 0.56)); //jupiter
+    lista_cores.push_back(tuple<float, float, float>(0.57, 0.64, 0.69)); //lua
+    lista_cores.push_back(tuple<float, float, float>(0.83, 0.69, 0.22)); //lua
+    lista_cores.push_back(tuple<float, float, float>(0.66, 0.6, 0.53)); //lua
+    lista_cores.push_back(tuple<float, float, float>(0.4, 0.22, 0.33)); //lua
+    lista_cores.push_back(tuple<float, float, float>(0.9, 0.67, 0.44)); //saturno
+    lista_cores.push_back(tuple<float, float, float>(0.76, 0.6, 0.42)); //lua
+    lista_cores.push_back(tuple<float, float, float>(0.76, 0.6, 0.42)); //lua
+    lista_cores.push_back(tuple<float, float, float>(0.49, 0.98, 1.0)); //urano
+    lista_cores.push_back(tuple<float, float, float>(0.0, 0.0, 0.61)); //neptuno
+    lista_cores.push_back(tuple<float, float, float>(0.97, 0.91, 0.81)); //lua
 }
 
 // função para desenhar a figura a partir dos dados guardados nos buffers;
-void drawVBO(){
+void drawVBO() {
 
     for (int j = 0; j < VBO.size(); ++j) {
-        glBindBuffer(GL_ARRAY_BUFFER, buffers[j]);
+        glBindBuffer(GL_ARRAY_BUFFER, get<1>(VBO2[j]));
         glVertexPointer(3, GL_FLOAT, 0, 0);
-        glDrawArrays(GL_TRIANGLES, 0, get<0>(VBO[j]));
+        glDrawArrays(GL_TRIANGLES, 0, get<0>(VBO2[j]));
     }
 }
 
-void desenha() {
+// esta função apenas é invocada na main para ler os ficheiros com os objectos para a memória do PC.
+void gurada_ficheiro() {
     /*
     * Variaveis
     */
@@ -131,11 +130,16 @@ void desenha() {
     */
 
     //DEBUG for (int i = 0; i < lista_escalas.size(); ++i){cout << get<0>(lista_escalas[i]) << get<1>(lista_escalas[i])<< get<2>(lista_escalas[i]) << endl;}
-    //DEBUG 
+    //DEBUG
     //for (int i = 0; i < lista_translacoes.size(); ++i){cout << get<0>(lista_translacoes[i]) << get<1>(lista_translacoes[i])<< get<2>(lista_translacoes[i]) << endl;}
+    glEnableClientState(GL_VERTEX_ARRAY); // Enable buffer functionality;
+    // Generate buffers;
+    buffers = (GLuint*)malloc(sizeof(GLuint)*lista_ficheiros.size());
+    // glGenBuffers(n_buffers, buffer_pointer);
+    glGenBuffers(lista_ficheiros.size(), buffers);
 
-    for (int i = 0; i <= lista_ficheiros.size() - 1; ++i) {
-
+    for (int i = 0; i <= lista_ficheiros.size()-1; ++i) {
+        printf("%d ", i);
         const char *f = lista_ficheiros[i].c_str();
         //DEBUG cout << lista_ficheiros[i] << i << endl;
         ifstream fi(f);
@@ -153,9 +157,9 @@ void desenha() {
                 }
                 else {
                     istringstream ss(str); //carregar cada um dos vértices para o vertexB;
-                    ss >> vertexB[k++]; // ss >> v1;
-                    ss >> vertexB[k++]; // ss >> v2;
-                    ss >> vertexB[k++]; // ss >> v3;
+                    ss >> v1; vertexB[k++] = v1;
+                    ss >> v2; vertexB[k++] = v2;
+                    ss >> v3; vertexB[k++] = v3;
                     //DEBUG cout << v1 << " " << v2 << " " << v3 << endl;
 
                     // isto já não faz nada porque carregamos directamente para o array vertexB.
@@ -166,17 +170,18 @@ void desenha() {
             }
             fi.close();
             // gerar o buffer;
-            glGenBuffers(1, &buffers[next_buffer]);
+            //glGenBuffers(1, &buffers[next_buffer]);
             // fazer bind do buffer;
             glBindBuffer(GL_ARRAY_BUFFER, buffers[next_buffer]);
             // preencher o buffer com os dados da figura;
             glBufferData(GL_ARRAY_BUFFER, n_pontos * 3 * sizeof(float), vertexB, GL_STATIC_DRAW);
             // vector que guarda o numero de pontos e qual o buffer associado;
             VBO.push_back(tuple<int, int>(n_pontos, next_buffer));
+            VBO2.push_back(tuple<int, GLuint>(n_pontos, buffers[next_buffer]));
             // avançar para o próximo buffer;
             next_buffer++;
             // libertar o array com os dados da figura, visto que já está no buffer da gráfica;
-            free(vertexB);
+            ::free(vertexB);
             primeira_linha = 0;
         }
         else {
@@ -184,32 +189,36 @@ void desenha() {
             exit(1);
         }
 
-        /*
-        * desenhar objeto
-        */
+        vertices.clear();
+    }
+    printf("\n");
+}
 
+// invocada na renderScene porque puxa menos pelo pc e tenho de desenhar o VBO a seguir à transformação;
+void desenha() {
+    for (int i = 0, k = 0; i <= lista_ficheiros.size() - 1; ++i) {
+        const char *f = lista_ficheiros[i].c_str();
+        //DEBUG cout << lista_ficheiros[i] << i << endl;
+        /** desenhar objeto */
         definir_cores();
-
         glPushMatrix();
 
         glColor3f(get<0>(lista_cores[i]), get<1>(lista_cores[i]), get<2>(lista_cores[i]));
+        //glColor3f(0, 0, 0); // DEBUG
         //DEBUG cout << "faz um translate " << get<0>(lista_translacoes[i]) << " " << get<1>(lista_translacoes[i]) << " " << get<2>(lista_translacoes[i]) << endl;
         glTranslatef(get<0>(lista_translacoes[i]), get<1>(lista_translacoes[i]), get<2>(lista_translacoes[i]));
         glRotatef(lista_angulos[i], get<0>(lista_rotacoes[i]), get<1>(lista_rotacoes[i]), get<2>(lista_rotacoes[i]));
         glScalef(get<0>(lista_escalas[i]), get<1>(lista_escalas[i]), get<2>(lista_escalas[i]));
 
-        /**glBegin(GL_TRIANGLES);
-        for (int j = 0; j < vertices.size(); ++j) {
-            glVertex3f(get<0>(vertices[j]), get<1>(vertices[j]), get<2>(vertices[j]));
-        }
-        glEnd();*/
-
+        //drawVBO();
+        //glBindBuffer(GL_ARRAY_BUFFER, buffers[<numero>]);
+        glBindBuffer(GL_ARRAY_BUFFER, buffers[i]); //buffers[get<1>(VBO[k])]
+        printf("n_pontos: %d buffers: %d\n", get<0>(VBO[k]),buffers[get<1>(VBO[k])]);
+        glVertexPointer(3, GL_FLOAT, 0, 0);
+        //glDrawArrays(GL_TRIANGLES, first, count); count é nº total de vertices.
+        glDrawArrays(GL_TRIANGLES, 0, get<0>(VBO[k])*3);
         glPopMatrix();
-
-        /*
-        * clear vector for next file
-        */
-        vertices.clear();
+        k++;
     }
 }
 
@@ -224,7 +233,7 @@ void changeSize(int w, int h) {
 
     // Prevent a divide by zero, when window is too short
     // (you cant make a window with zero width).
-    if(h == 0)
+    if (h == 0)
         h = 1;
 
     // compute window's aspect ratio
@@ -239,7 +248,7 @@ void changeSize(int w, int h) {
     glViewport(0, 0, w, h);
 
     // Set perspective
-    gluPerspective(45.0f ,ratio, 1.0f ,1000.0f);
+    gluPerspective(45.0f, ratio, 1.0f, 1000.0f);
 
     // return to the model view matrix mode
     glMatrixMode(GL_MODELVIEW);
@@ -252,34 +261,28 @@ void renderScene(void) {
 
     // set the camera
     glLoadIdentity();
-/*     //visao lateral dos planetas
-    gluLookAt(300, 0, 1000,
-              300.0f, 0.0f, 0.0f,
-              0.0f, 1.0f, 0.0f);
-*/
+    gluLookAt(camX, camY, camZ, // posição da camara
+              lax, lay, laz,
+              0.0f, 1.0f, 0.0f); // vector up
 
-    gluLookAt(5.0f, 5.0f, 5.0f,
-              0.0f, 0.0f, 0.0f,
-              0.0f, 1.0f, 0.0f);
-
+    /*visao lateral dos planetas*/
     /*gluLookAt(camX, camY, camZ,
-        250.0f, 50.0f, 50.0f,
-        0.0f, 1.0f, 0.0f);*/
+    250, 50.0f, 50.0f,
+    0.0f, 1.0f, 0.0f);
+    */
 
     // put the geometric transformations here
-    if(flag_drawing_mode == 0){
-        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-    }else if(flag_drawing_mode == 1){
-        glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-    }else if(flag_drawing_mode == 2){
-        glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
+    if (flag_drawing_mode == 0) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+    else if (flag_drawing_mode == 1) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    else if (flag_drawing_mode == 2) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
     }
 
-
-    glEnableClientState(GL_VERTEX_ARRAY);
-    //glutWireTeapot(1);
     desenha();
-    drawVBO();
 
     frame++;
     times = glutGet(GLUT_ELAPSED_TIME);
@@ -298,6 +301,17 @@ void renderScene(void) {
 
 void processKeys(unsigned char c, int xx, int yy) {
     if (c == 27) exit(0);
+    switch (c){
+        case 'w': ;
+            break;
+        case 's': ;
+            break;
+        case 'a': ;
+            break;
+        case 'd': ;
+            break;
+        default: break;
+    }
 }
 
 void processSpecialKeys(int key, int xx, int yy) {
@@ -321,13 +335,13 @@ void processSpecialKeys(int key, int xx, int yy) {
                 beta = -1.5f;
             break;
 
-        case GLUT_KEY_PAGE_UP:
+        case GLUT_KEY_PAGE_DOWN:
             radius -= 0.1f;
             if (radius < 0.1f)
                 radius = 0.1f;
             break;
 
-        case GLUT_KEY_PAGE_DOWN:
+        case GLUT_KEY_PAGE_UP:
             radius += 0.1f;
             break;
     }
@@ -336,32 +350,32 @@ void processSpecialKeys(int key, int xx, int yy) {
 
 }
 
-int translacao(TiXmlElement* translate){
+int translacao(TiXmlElement* translate) {
 
     const char *aux_x = translate->Attribute("X");
     const char *aux_y = translate->Attribute("Y");
     const char *aux_z = translate->Attribute("Z");
 
-    if(aux_x)   translate_x = atoi(aux_x);
-    if(aux_y)   translate_y = atof(aux_y);
-    if(aux_z)   translate_z = atof(aux_z);
+    if (aux_x)   translate_x = atof(aux_x);
+    if (aux_y)   translate_y = atof(aux_y);
+    if (aux_z)   translate_z = atof(aux_z);
 
     //guardar valores desta translacao
     //lista_translacoes.push_back(tuple<float,float,float>(translate_x,translate_y,translate_z));
     //cout << "faz um translate " << translate_x << " " <<translate_y << " " << translate_z << endl;
     return 0;
 }
-int rotacao(TiXmlElement* rotate){
+int rotacao(TiXmlElement* rotate) {
 
     const char *aux_a = rotate->Attribute("angle");
     const char *aux_x = rotate->Attribute("axisX");
     const char *aux_y = rotate->Attribute("axisY");
     const char *aux_z = rotate->Attribute("axisZ");
 
-    if(aux_a)   angulo = atof(aux_a);
-    if(aux_x)   rotate_x = atof(aux_x);
-    if(aux_y)   rotate_y = atof(aux_y);
-    if(aux_z)   rotate_z = atof(aux_z);
+    if (aux_a)   angulo = atof(aux_a);
+    if (aux_x)   rotate_x = atof(aux_x);
+    if (aux_y)   rotate_y = atof(aux_y);
+    if (aux_z)   rotate_z = atof(aux_z);
 
     //guardar valores desta rotacao
     //lista_rotacoes.push_back(tuple<float,float,float>(rotate_x,rotate_y,rotate_z));
@@ -369,15 +383,15 @@ int rotacao(TiXmlElement* rotate){
     //cout << "faz uma rotacao " << rotate_x << " " <<rotate_y << " " << rotate_z << endl;
     return 0;
 }
-int escala(TiXmlElement* scale){
+int escala(TiXmlElement* scale) {
 
     const char *aux_x = scale->Attribute("X");
     const char *aux_y = scale->Attribute("Y");
     const char *aux_z = scale->Attribute("Z");
 
-    if(aux_x)   scale_x = atof(scale->Attribute("X"));
-    if(aux_y)   scale_y = atof(scale->Attribute("Y"));
-    if(aux_z)   scale_z = atof(scale->Attribute("Z"));
+    if (aux_x)   scale_x = atof(scale->Attribute("X"));
+    if (aux_y)   scale_y = atof(scale->Attribute("Y"));
+    if (aux_z)   scale_z = atof(scale->Attribute("Z"));
 
     //guardar valores desta escala
     //lista_escalas.push_back(tuple<float,float,float>(scale_x,scale_y,scale_z));
@@ -386,92 +400,97 @@ int escala(TiXmlElement* scale){
 }
 //int modelo(){}
 
-int le_xml(char *nome){
+int le_xml(char *nome) {
     int erros = 0;
     //string caminho = "xml/" + (string)nome;
 
     // DEBUG WINDOWS. Tenho de passar o caminho completo até ao ficheiro. O xml tbm tem de ser alterado.
-    //string caminho = "C:\\Users\\Utilizador\\Downloads\\CG_1617-master (2)\\CG_1617-master\\CGfase2\\motor\\esfera.xml";
+    //string caminho = "C:\\Users\\Utilizador\\Downloads\\CG_1617-master (2)\\CG_1617-master\\CGfase2\\motor\\universo.xml";
     string caminho = "../";
+    caminho += nome;
 
     TiXmlDocument doc;
 
-    if(!doc.LoadFile(caminho.c_str()) ){
-        cout << "Nome do ficheiro inválido" << caminho << endl;
-        return erros+1;
+    if (!doc.LoadFile(nome)) {
+        if(!doc.LoadFile(caminho.c_str())) {
+            cout << "Nome do ficheiro inválido " << nome << endl;
+            return erros + 1;
+        }
     }
 
     //scene
     TiXmlElement* raiz = doc.FirstChildElement();
-    if(raiz == NULL) return erros+1;
+    if (raiz == NULL) return erros + 1;
 
     // Grupos
     TiXmlElement* grupo_ext = NULL;
-    for(grupo_ext=raiz->FirstChildElement("group"); grupo_ext; grupo_ext=grupo_ext->NextSiblingElement("group")) {
+    for (grupo_ext = raiz->FirstChildElement("group"); grupo_ext; grupo_ext = grupo_ext->NextSiblingElement("group")) {
 
         // TRANSLATE
         TiXmlElement* translate = grupo_ext->FirstChildElement("translate");
-        if(translate != NULL)
+        if (translate != NULL)
             translacao(translate);
 
         // ROTATE
         TiXmlElement* rotate = grupo_ext->FirstChildElement("rotate");
-        if(rotate != NULL)
+        if (rotate != NULL)
             rotacao(rotate);
 
         // ROTATE
         TiXmlElement* scale = grupo_ext->FirstChildElement("scale");
-        if(scale != NULL)
+        if (scale != NULL)
             escala(scale);
 
         TiXmlElement* models = grupo_ext->FirstChildElement("models");
-        if(models != NULL){
+        if (models != NULL) {
             const char* nome_aux = NULL;
 
             nome_aux = models->FirstChildElement("model")->Attribute("file");
             if (nome_aux == NULL) return 0;
             std::string nome_ficheiro = "";
+            nome_ficheiro += "../formas/";
             nome_ficheiro += nome_aux;
 
             lista_ficheiros.push_back(nome_ficheiro);
-            lista_rotacoes.push_back(tuple<float,float,float>(rotate_x,rotate_y,rotate_z));
+            lista_rotacoes.push_back(tuple<float, float, float>(rotate_x, rotate_y, rotate_z));
             lista_angulos.push_back(angulo);
-            lista_translacoes.push_back(tuple<float,float,float>(translate_x,translate_y,translate_z));
-            lista_escalas.push_back(tuple<float,float,float>(scale_x,scale_y,scale_z));
+            lista_translacoes.push_back(tuple<float, float, float>(translate_x, translate_y, translate_z));
+            lista_escalas.push_back(tuple<float, float, float>(scale_x, scale_y, scale_z));
 
         }
 
         TiXmlElement* grupo_int = NULL;
-        for(grupo_int=grupo_ext->FirstChildElement("group"); grupo_int; grupo_int=grupo_int->NextSiblingElement("group")) {
+        for (grupo_int = grupo_ext->FirstChildElement("group"); grupo_int; grupo_int = grupo_int->NextSiblingElement("group")) {
             // TRANSLATE
             TiXmlElement* translate = grupo_int->FirstChildElement("translate");
-            if(translate != NULL)
+            if (translate != NULL)
                 translacao(translate);
 
             // ROTATE
             TiXmlElement* rotate = grupo_int->FirstChildElement("rotate");
-            if(rotate != NULL)
+            if (rotate != NULL)
                 rotacao(rotate);
 
             // ROTATE
             TiXmlElement* scale = grupo_int->FirstChildElement("scale");
-            if(scale != NULL)
+            if (scale != NULL)
                 escala(scale);
 
             TiXmlElement* models = grupo_int->FirstChildElement("models");
-            if(models != NULL){
+            if (models != NULL) {
                 const char* nome_aux = NULL;
 
                 nome_aux = models->FirstChildElement("model")->Attribute("file");
                 if (nome_aux == NULL) return 0;
                 std::string nome_ficheiro = "";
+                nome_ficheiro += "../formas/";
                 nome_ficheiro += nome_aux;
 
                 lista_ficheiros.push_back(nome_ficheiro);
-                lista_rotacoes.push_back(tuple<float,float,float>(rotate_x,rotate_y,rotate_z));
+                lista_rotacoes.push_back(tuple<float, float, float>(rotate_x, rotate_y, rotate_z));
                 lista_angulos.push_back(angulo);
-                lista_translacoes.push_back(tuple<float,float,float>(translate_x,translate_y,translate_z));
-                lista_escalas.push_back(tuple<float,float,float>(scale_x,scale_y,scale_z));
+                lista_translacoes.push_back(tuple<float, float, float>(translate_x, translate_y, translate_z));
+                lista_escalas.push_back(tuple<float, float, float>(scale_x, scale_y, scale_z));
 
             }
         }
@@ -480,17 +499,16 @@ int le_xml(char *nome){
     return 0;
 }
 
-
 void processMenuEvents(int option) {
 
     switch (option) {
-        case 0 :
+        case 0:
             flag_drawing_mode = 0;
             break;
-        case 1 :
+        case 1:
             flag_drawing_mode = 1;
             break;
-        case 2 :
+        case 2:
             flag_drawing_mode = 2;
             break;
         default:
@@ -507,61 +525,72 @@ void createGLUTMenus() {
 
     menu = glutCreateMenu(processMenuEvents);
 
-    glutAddMenuEntry("Fill",0);
-    glutAddMenuEntry("Line",1);
-    glutAddMenuEntry("Point",2);
+    glutAddMenuEntry("Fill", 0);
+    glutAddMenuEntry("Line", 1);
+    glutAddMenuEntry("Point", 2);
 
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
+void printInfo() {
+
+    printf("Vendor: %s\n", glGetString(GL_VENDOR));
+    printf("Renderer: %s\n", glGetString(GL_RENDERER));
+    printf("Version: %s\n", glGetString(GL_VERSION));
+
+    /*printf("\nUse Arrows to move the camera up/down and left/right\n");
+    printf("Home and End control the distance from the camera to the origin");*/
+}
+
 int main(int argc, char **argv) {
 
-// init GLUT and the window
+    // init GLUT and the window
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
-    glutInitWindowPosition(0,0);
-    glutInitWindowSize(glutGet(GLUT_SCREEN_WIDTH),glutGet(GLUT_SCREEN_HEIGHT));
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+    glutInitWindowPosition(0, 0);
+    glutInitWindowSize(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
     glutCreateWindow("MOTOR");
 
-// Required callback registry
+    // Required callback registry
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
 
-// Callback registration for keyboard processing
+    // Callback registration for keyboard processing
     glutKeyboardFunc(processKeys);
     glutSpecialFunc(processSpecialKeys);
 
     glewInit();
 
-// MENUS
+    // MENUS
     glutDetachMenu(GLUT_RIGHT_BUTTON);
     createGLUTMenus();
 
 
-//  OpenGL settings
+    //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-
-    glClearColor(1,1,1,1);
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    //glGenBuffers(1024, buffers);
+    glClearColor(1, 1, 1, 1);
 
     /*if(argc == 2){
-        if(le_xml(argv[1]) > 0){
-            cout << "O ficheiro xml não foi encontrado" << endl;
-            return 1;
-        }
+    if(le_xml(argv[1]) > 0){
+    cout << "O ficheiro xml não foi encontrado" << endl;
+    return 1;
+    }
     }else{
-        cout << "Número de argumentos inválido" << endl;
-        return 1;
+    cout << "Número de argumentos inválido" << endl;
+    return 1;
     }*/
 
     le_xml(argv[1]);
     //le_xml("universo.xml");
     //cout << lista_ficheiros.size() << endl;
-    //desenha();
+    gurada_ficheiro();
     glutPostRedisplay();
     spherical2Cartesian();
-
-// enter GLUT's main cycle
+    printInfo();
+    // enter GLUT's main cycle
     glutMainLoop();
 
     return 0;

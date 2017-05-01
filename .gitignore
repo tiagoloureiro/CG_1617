@@ -7,3 +7,4 @@ gerador/*
 motor/*
 makefile
 */cmake-build-debug/*
+*_old.*

@@ -38,6 +38,7 @@ set(SOURCE_FILES_1
         lib/tinyxml/tinyxml.h
         lib/tinyxml/tinyxmlerror.cpp
         lib/tinyxml/tinyxmlparser.cpp
+        #src/motor_old.cpp)
         src/motor.cpp)
 
 set(SOURCE_FILES_2
